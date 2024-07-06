@@ -25,7 +25,7 @@
 // 1 <= time <= 1000
 
 
-
+// Link --> https://leetcode.com/problems/pass-the-pillow/description/
 class Solution {
     public int passThePillow(int n, int time) {
         int completedCycles = time / (n - 1); // we get completed cycles
