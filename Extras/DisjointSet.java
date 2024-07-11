@@ -2,14 +2,15 @@
 // Use this editor to write, compile and run your Java code online
 
 class DisjointSet {
-    int[] rank, parent,  size;
+    public int[] rank, parent,  size;
     public DisjointSet(int n){
         rank = new int[n+1];
         parent = new int[n+1];
         size = new int[n+1];
-        
+        Arrays.fill(rank,0);
         for(int i=0;i<=n;i++){
             parent[i]=i;
+            size[i]=1;
         }
     }
     
