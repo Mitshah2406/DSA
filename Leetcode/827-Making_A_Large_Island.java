@@ -37,7 +37,18 @@
 
 
 //soln
+// Forumula::(row*n)+col; --> relative numbering of components as given is a matrix not a graph nodes, so we assume each cell as node.
 
+// Eg - 
+// [
+//     [1,1,1],
+//     [1,1,1],
+//     [1,1,1]
+// ]
+// We know each row has 3 cells that is (n) cells so row*n + col;
+
+// eg - for cell(1,1) here row=1, col=1, n=3
+// 1*3+1 = 4
 class DisjointSet {
     public int[] rank, parent, size;
 
@@ -105,8 +116,7 @@ class Solution {
 
         DisjointSet ds = new DisjointSet(n * n);
 
-        // connecting the 1's waale components
-
+        // connecting the 1's waale components(intialization)
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < n; col++) {
                 if (grid[row][col] == 0)
@@ -127,7 +137,7 @@ class Solution {
             }
         }
 
-        // check by adding zeros
+        // check by replacing ones by zeros and taking max component size formed
         int mx = 0;
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < n; col++) {
@@ -156,6 +166,7 @@ class Solution {
                 mx = Math.max(sizeT + 1, mx);
             }
         }
+        //but what if there are all 1's so we need to return ans in that case too..
         for (int cell = 0; cell < (n * n); cell++) {
             mx = Math.max(ds.size[ds.findUltimateParent(cell)], mx);
         }
