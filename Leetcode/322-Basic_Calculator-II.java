@@ -11,7 +11,7 @@ class Solution {
         }
     }
 
-    private int calculate(int a, int b, char operation) {
+    private int calc(int a, int b, char operation) {
         if (operation == '+') {
             return a + b;
         } else if (operation == '-') {
@@ -48,7 +48,7 @@ class Solution {
                     int val2 = operand.pop();
                     int val1 = operand.pop();
 
-                    int ans = calculate(val1, val2, oper);
+                    int ans = calc(val1, val2, oper);
                     // System.out.println(ans);
                     operand.push(ans);
                 }
@@ -62,7 +62,7 @@ class Solution {
             int val2 = operand.pop();
             int val1 = operand.pop();
 
-            int ans = calculate(val1, val2, oper);
+            int ans = calc(val1, val2, oper);
             //   System.out.println(ans);
             operand.push(ans);
         }
