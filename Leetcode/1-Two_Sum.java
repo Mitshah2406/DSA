@@ -1,6 +1,5 @@
 class Solution {
     public int[] twoSum(int[] nums, int k) {
-
         int n = nums.length;
         int temp[] = nums.clone();
         int i = 0;
