@@ -1,4 +1,1 @@
-for(int k=0;k<cSteps+1;k++){
-                arr.add(mat[i][j]);
-                j++;
-            }
+https://github.com/Mitshah2406/DSA-Questions-Sandbox/blob/main/GFG/Spirally_traversing_a_matrix.java
