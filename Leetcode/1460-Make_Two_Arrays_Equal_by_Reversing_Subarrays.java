@@ -1,12 +1,14 @@
 class Solution {
-    public boolean canBeEqual(int[] target, int[] arr) {
-        Arrays.sort(arr);
-        Arrays.sort(target);
-
-        for (int i = 0; i < target.length; i++) {
-            if (target[i] != arr[i])
-                return false;
+    public boolean canBeEqual(int[] targetArray, int[] currentArray) {
+       
+        int[] elementCounts = new int[1001];
+        int uniqueCount = 0;
+        
+        for (int i = 0; i < targetArray.length; i++) {
+            if (elementCounts[targetArray[i]]++ == 0) uniqueCount++;
+            if (elementCounts[currentArray[i]]-- == 1) uniqueCount--;
         }
-        return true;
+        
+        return uniqueCount == 0;
     }
 }
