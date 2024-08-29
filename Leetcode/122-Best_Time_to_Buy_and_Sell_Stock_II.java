@@ -25,25 +25,52 @@ class Solution {
 
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        dp = new int[n][2];
-        for(int d[]: dp){
-        Arrays.fill(d,-1);
-        }
-        return solve(prices,0, 1, n);
-        // for (int i = n-1; i >= 0; i--) {
-        //     long profit = 0;
-        //     for (int canBuy = 0; canBuy <= 1; canBuy++) {
-        //         if (canBuy == 1) {
-        //             dp[i][canBuy] = Math.max(
-        //                     profit + (-prices[i] + dp[i + 1][0]), profit + dp[i + 1][1]);
-        //         } else {
-        //             dp[i][canBuy] = Math.max(
-        //                     profit + (prices[i] + dp[i + 1][1]), profit + dp[i + 1][0]);
-        //         }
-        //     }
 
+        // memoization
+
+        // dp = new int[n][2];
+        // for(int d[]: dp){
+        // Arrays.fill(d,-1);
+        // }
+        // return solve(prices,0, 1, n);
+
+
+        // tabulation Method 
+        // dp = new int[n+1][2];
+
+        // for(int i=n-1;i>=0;i--){
+        //     int profit = 0;
+        //     for(int buy=0;buy<=1;buy++){
+        //         if(buy==1){
+        //             profit = Math.max( -prices[i] + dp[i+1][0], dp[i+1][1]);
+        //         }else{
+        //             profit = Math.max(prices[i] + dp[i+1][1], dp[i+1][0]);
+        //         }
+        //     dp[i][buy] = profit;
+        //     }
         // }
 
-        // return profit;
+        // return dp[0][1]; --> this [0][1] came from line ref of line 35
+
+        // --> Optimized Version 
+        // at any instance of time we need just 4 cells i.e (curr 2 cells, and next 2 cells)
+        // so modify the logic accordingly
+        int next[] = new int[2];
+        int curr[] = new int[2];
+
+        for(int i=n-1;i>=0;i--){
+            int profit = 0;
+            for(int buy=0;buy<=1;buy++){
+                if(buy==1){
+                    profit = Math.max( -prices[i] + next[0], next[1]);
+                }else{
+                    profit = Math.max(prices[i] + next[1], next[0]);
+                }
+                curr[buy] = profit; // ref from line 49
+            }
+                next = curr;
+        }
+
+        return curr[1]; // ref from line 35, and 53 (use curr/next anything will give same ans)
     }
 }
