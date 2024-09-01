@@ -6,7 +6,10 @@ class Solution {
         }
 
         int ans[][] = new int[m][n];
+        // simple math
 
+        // row = i / cols
+        // col = i % cols
         for(int i=0;i<len;i++){
             ans[i/n][i%n] = original[i];
         }
