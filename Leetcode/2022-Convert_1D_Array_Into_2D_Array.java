@@ -1,3 +1,16 @@
-class Solution:
-    def construct2DArray(self, original: List[int], m: int, n: int) -> List[List[int]]:
-        return [original[n * i:n * (i + 1)] for i in range(m)] if m * n == len(original) else []
+class Solution {
+    public int[][] construct2DArray(int[] original, int m, int n) {
+        int len = original.length;
+        if(m*n!=len){
+            return new int[][]{};
+        }
+
+        int ans[][] = new int[m][n];
+
+        for(int i=0;i<len;i++){
+            ans[i/n][i%n] = original[i];
+        }
+
+        return ans;
+    }
+}
