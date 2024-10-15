@@ -1,34 +1,35 @@
 class Solution {
-    public int[] twoSum(int[] nums, int k) {
-        int n = nums.length;
-        int temp[] = nums.clone();
-        int i = 0;
-        int j = n - 1;
-        int res[] = new int[2];
-        Arrays.sort(nums);
-        while (i < j) {
-            int sum = nums[i] + nums[j];
-            if (sum < k) {
-                i++;
-            } else if (sum > k) {
-                j--;
-            } else {
-                res[0] = i;
-                res[1] = j;
+    public int[] twoSum(int[] arr, int target) {
+
+        int n = arr.length;
+        int ans[] = new int[2];
+        // brute - O(n^2)
+        // for(int i=0;i<n;i++){
+        //     for(int j=i+1;j<n;j++){
+        //         if(arr[i]+arr[j]==target){
+        //             ans[0] = i;
+        //             ans[1] = j;
+        //             return ans;
+        //         }
+        //     }
+        // }
+        // return ans;
+
+        // better - O(n) with space
+
+        HashMap<Integer, Integer> hm = new HashMap();
+
+        for(int i=0;i<n;i++){
+            if(hm.containsKey(target-arr[i])){
+                ans[0]=i;
+                ans[1] = hm.get(target-arr[i]);
                 break;
             }
+            hm.put(arr[i], i);
         }
-        boolean flag1 = true;
-        boolean flag2 = true;
-        for(int m=0;m<n;m++){
-            if(temp[m] == nums[res[0]]&&flag1){
-                flag1=false;
-                res[0]=m;
-            }else if(temp[m] == nums[res[1]] && flag2){
-                 flag2=false;
-                res[1]=m;
-            }
-        }
-        return res;
+
+        return ans;
+
+       
     }
 }
