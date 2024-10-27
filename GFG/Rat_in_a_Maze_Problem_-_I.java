@@ -1,89 +1,62 @@
-//{ Driver Code Starts
-// Initial Template for Java
-
-import java.util.*;
-
-class Rat {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int t = sc.nextInt();
-
-        while (t-- > 0) {
-            int n = sc.nextInt();
-            int[][] a = new int[n][n];
-            for (int i = 0; i < n; i++)
-                for (int j = 0; j < n; j++) a[i][j] = sc.nextInt();
-
-            Solution obj = new Solution();
-            ArrayList<String> res = obj.findPath(a);
-            Collections.sort(res);
-            if (res.size() > 0) {
-                for (int i = 0; i < res.size(); i++) System.out.print(res.get(i) + " ");
-                System.out.println();
-            } else {
-                System.out.println(-1);
-            }
-        }
-    }
-}
-
-// } Driver Code Ends
-
-
-
-
 class Solution {
-    public static void solve(int i, int j, int mat[][], int vis[][], ArrayList<String>ans, String path, int n){
-       //bc
-        if(i==n-1 && j==n-1){
-            ans.add(path);
+    public void ratInMaze(int mat[][], int n, int i, int j, StringBuilder path, ArrayList<String> ans){
+        // Base case: out of bounds or blocked cell or already visited cell
+        if (i < 0 || j < 0 || i >= n || j >= n || mat[i][j] == 0 || mat[i][j] == 2) {
             return;
         }
-        //downwards
-        //mit
-        if(i+1<n && vis[i+1][j]==0 && mat[i+1][j]==1){
-            vis[i][j] = 1;
-            solve(i+1,j,mat,vis,ans, path+"D",n);
-            vis[i][j] = 0;
+        
+        // Reached the destination
+        if (i == n - 1 && j == n - 1) {
+            ans.add(path.toString());
+            return;
         }
         
-        //left
-        
-        if(j-1>=0 && vis[i][j-1]==0 && mat[i][j-1]==1){
-            vis[i][j] = 1;
-            solve(i,j-1,mat,vis,ans, path+"L",n);
-            vis[i][j] = 0;
+        // Mark as visited
+        mat[i][j] = 2;
+
+        // Move Down
+        if (i + 1 < n && mat[i + 1][j] == 1) {
+            path.append("D");
+            ratInMaze(mat, n, i + 1, j, path, ans);
+            path.setLength(path.length() - 1);
         }
-        
-        //right
-        
-        if(j+1<n && vis[i][j+1]==0 && mat[i][j+1]==1){
-            vis[i][j] = 1;
-            solve(i,j+1,mat,vis,ans, path+"R",n);
-            vis[i][j] = 0;
+
+        // Move Right
+        if (j + 1 < n && mat[i][j + 1] == 1) {
+            path.append("R");
+            ratInMaze(mat, n, i, j + 1, path, ans);
+            path.setLength(path.length() - 1);
         }
-        
-        //upwards
-        
-        if(i-1>=0 && vis[i-1][j]==0 && mat[i-1][j]==1){
-            vis[i][j] = 1;
-            solve(i-1,j,mat,vis,ans, path+"U",n);
-            vis[i][j] = 0;
+
+        // Move Up
+        if (i - 1 >= 0 && mat[i - 1][j] == 1) {
+            path.append("U");
+            ratInMaze(mat, n, i - 1, j, path, ans);
+            path.setLength(path.length() - 1);
         }
+
+        // Move Left
+        if (j - 1 >= 0 && mat[i][j - 1] == 1) {
+            path.append("L");
+            ratInMaze(mat, n, i, j - 1, path, ans);
+            path.setLength(path.length() - 1);
+        }
+
+        // Unmark visited
+        mat[i][j] = 1;
     }
-    
-    
+
     public ArrayList<String> findPath(int[][] mat) {
         int n = mat.length;
-       int vis[][] = new int[n][n];
-    //   for(int i=0;i<n;i++){
-    //       Arrays.fill(mat[i],0);
-    //   }
-       ArrayList<String> ans = new ArrayList();
-       if(mat[0][0]==1) solve(0,0,mat, vis, ans, "",n);
-       // atharva bhadwa
-       return ans;
+        ArrayList<String> ans = new ArrayList<>();
+        
+        // Check if the start or destination is blocked
+        if (mat[0][0] == 0 || mat[n - 1][n - 1] == 0) {
+            return ans;
+        }
+
+        StringBuilder path = new StringBuilder();
+        ratInMaze(mat, n, 0, 0, path, ans);
+        return ans;
     }
 }
-
-// DLRU
