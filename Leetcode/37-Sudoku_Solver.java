@@ -1,22 +1,29 @@
 class Solution {
     public boolean solve(char[][] board) {
+        // traverse the board row wise
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-
+                // check for empty cell
                 if (board[i][j] == '.') {
+                    // try placing 1-9
                     for (char x = '1'; x <= '9'; x++) {
+                        // check if placement is valid acc to current board state
                         if (valid(board, i, j, x)) {
+                            // place
                             board[i][j] = x;
+                            //solve further
                             boolean ans = solve(board);
+                            // if board fully solved return true, else bacltrack
                             if (ans==true) {return true;}
                             else {board[i][j] = '.';}
                         }
                     }
+                    // if no number satisfies for this cell means earlier cell has some placment wrong
                     return false;
                 }
             }
         }
-
+        // return true if solved completely
         return true;
     }
 
