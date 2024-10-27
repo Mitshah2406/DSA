@@ -9,56 +9,62 @@
  * }
  */
 class Solution {
-    public static ListNode reverseList(ListNode head) {
-        if (head == null || head.next == null)
-            return null;
-
-        ListNode curr = head;
-        ListNode prev = null;
-
-        while (curr != null) {
-            ListNode after = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = after;
-        }
-
-        return prev;
-    }
-
-    public void reorderList(ListNode head) {
+    public ListNode breakLL(ListNode head) {
         ListNode slow = head;
         ListNode fast = head;
 
         while (fast.next != null && fast.next.next != null) {
-            slow = slow.next;
             fast = fast.next.next;
+            slow = slow.next;
+        }
+        ListNode h2 = null;
+        h2 = slow.next;
+        slow.next = null;
+
+        return h2;
+    }
+
+    public ListNode reverseLL(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        ListNode currP1 = head.next;
+
+        while (currP1 != null) {
+            curr.next = prev;
+            prev = curr;
+            curr = currP1;
+            currP1 = currP1.next;
         }
 
-        ListNode temp = head;
-        ListNode mid = slow;
+        curr.next = prev;
+   
 
-        mid = reverseList(mid);
+        return curr;
+    }
 
-        ListNode temp1 = mid;
-        ListNode nxt1 = null;
+    public void reorderList(ListNode head) {
 
-        ArrayList<ListNode> arr = new ArrayList();
+        // first find mid then break into two lists
+        // reverse second list 
 
-        while (temp1 != null) {
-            arr.add(temp1);
-            temp1 = temp1.next;
+        // continue merging them
+        if(head.next==null){
+            return;
         }
-        int i = 0;
-        while (temp != null && i < arr.size()) {
-            nxt1 = temp.next;
+        ListNode h2 = breakLL(head);
 
-            temp.next = arr.get(i);
+        ListNode revH2 = reverseLL(h2);
 
-            i++;
-            temp = temp.next;
-            temp.next= nxt1;
-            temp = temp.next;
+        ListNode t1 = head;
+        ListNode t2 = revH2;
+        while(t1!=null && t2!=null){
+            ListNode t1p1 = t1.next;
+            ListNode t2p1 = t2.next;
+            t1.next = t2;
+            t2.next = t1p1;
+
+            t1 = t1p1;
+            t2 = t2p1;
         }
 
     }
