@@ -1,37 +1,30 @@
-import java.io.*;
-import java.util.*;
 class Solution {
-    public  boolean isValid(String s) {
-        char[] br = s.toCharArray();
-        Stack<Character> st = new Stack<>();
-        for (int i = 0; i < br.length; i++) {
-            if (br[i] == '('
-                    || br[i] == '{'
-                    || br[i] == '[') {
-                st.push(br[i]);
-            } else if (br[i] == ')'
-                    || br[i] == '}'
-                    || br[i] == ']') {
-                if (st.empty()) {
-                    return false;
-                } else {
-                    char top = st.pop();
-                    if ((top=='[' && br[i]!=']')
-                    || (top=='(' && br[i]!=')')
-                    || (top=='{' && br[i]!='}')) {
+    public boolean isValid(String s) {
+        Stack<Character> st = new Stack();
+
+        char arr[] = s.toCharArray();
+        int n = arr.length;
+        for (int i = 0; i < n; i++) {
+            char c = arr[i];
+
+            if (c == '(' || c == '[' || c == '{') {
+                st.push(c);
+            } else {
+                if (st.size() > 0) {
+                    char top = st.peek();
+                    if ((c == ')' && top == '(') || (c == ']' && top == '[')
+                            || (c == '}' && top == '{')) {
+
+                        st.pop();
+                    } else {
                         return false;
                     }
+                } else {
+                    return false;
                 }
-
-            } else {
-                return false;
             }
         }
 
-        if(st.empty()){
-            return true;
-        }  return false;
+        return st.size() == 0;
     }
-    
-    
 }
