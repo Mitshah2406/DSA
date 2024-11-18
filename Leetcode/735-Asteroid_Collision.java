@@ -1,5 +1,15 @@
 class Solution {
     public int[] asteroidCollision(int[] asteroids) {
+        // Optimal Approach 
+            // TC - O(n)
+            // SC - O(n)
+                // Idea
+                    // 4 cases: 
+                        // + + ==> No Collision (Push)
+                        // + - ==> Collision (Pop/Push)
+                        // - - ==> No Collision (Push)
+                        // - + ==> No Collision (Push)
+
         Stack<Integer> st = new Stack();
         int n = asteroids.length;
         for (int i = 0; i < n; i++) {
@@ -27,7 +37,6 @@ class Solution {
             } else {
                 st.push(curr);
             }
-            // System.out.println(st);
         }
         int n1 = st.size();
         int ans[] = new int[n1];
