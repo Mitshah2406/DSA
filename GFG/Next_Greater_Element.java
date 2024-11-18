@@ -25,25 +25,27 @@ class Solution {
             // TC- O(n) 
             // SC- O(n)
             
-            // Iterate from backwards keep adding elems to stack and updates all ans
-            // reverse the arr
+            // Iterate and if you can solve , then solve it the already existing in stack otherwise get pushed as a problem
         int n = arr.length;
         Stack<Integer> st = new Stack();
-        ArrayList<Integer> ans = new ArrayList();
-        for(int i=n-1;i>=0;i--){
-            while(!st.isEmpty() && st.peek()<=arr[i]){
-                st.pop();
+        int ans[] = new int[n];
+        ArrayList<Integer> res = new ArrayList();
+        for(int i=0;i<n;i++){
+             while(st.size()>0 && arr[i]>arr[st.peek()]){
+                int idx = st.pop();
+                ans[idx] = arr[i];
             }
-            
-            if(st.isEmpty()){
-                ans.add(-1);
-            }else{
-                ans.add(st.peek());
-            }
-            st.push(arr[i]);
+
+           st.push(i);
         }
         
-        Collections.reverse(ans);
-        return ans;
+        while(!st.isEmpty()){
+            ans[st.pop()] = -1;
+        }
+        
+        for(int i=0;i<n;i++){
+            res.add(ans[i]);
+        }
+        return res;
     }
 }
