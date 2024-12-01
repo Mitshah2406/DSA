@@ -61,8 +61,8 @@ class LFUCache {
     private Node head;
     private Node tail;
     private int minFreq;
-    private HashMap<Integer, Node> keyMapping; // key -> Node
-    private HashMap<Integer, HashSet<Node>> freqMapping; // key -> Node
+    private HashMap<Integer, Node> keyMapping; // key x Node
+    private HashMap<Integer, HashSet<Node>> freqMapping; // freq x Node
 
     public LFUCache(int capacity) {
         k = capacity;
@@ -78,11 +78,11 @@ class LFUCache {
     public int get(int key) {
         if (keyMapping.containsKey(key)) {
             Node got = keyMapping.get(key);
-            operateFreqMap(freqMapping, got, got.freq, false);
-            delete(got);
-            add(head, tail, got);
-            got.freq++;
-            operateFreqMap(freqMapping, got, got.freq, true);
+            operateFreqMap(freqMapping, got, got.freq, false); // REMOVE
+            delete(got); // DELETE
+            add(head, tail, got); // ADD
+            got.freq++; // UPDATE ITS FREQUENCY
+            operateFreqMap(freqMapping, got, got.freq, true); // ADD AGAIN TO FREQ MAP
             if (freqMapping.get(got.freq - 1) == null || freqMapping.get(got.freq - 1).size() == 0) {
                 if (minFreq == got.freq - 1) {
                     minFreq = got.freq;
