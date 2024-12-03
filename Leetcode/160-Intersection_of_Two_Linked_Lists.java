@@ -59,33 +59,20 @@ public class Solution {
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         // Brute floyd cycle approach
         // return intersectionFloyd(headA, headB);
+
+        // More optimal
         int sA = getSize(headA);
         int sB = getSize(headB);
-        ListNode getStartA = null;
-        ListNode getStartB = null;
+        ListNode getStartA = headA;
+        ListNode getStartB = headB;
+        int diff = Math.abs(sA - sB);
         if (sA > sB) {
-            ListNode temp = headA;
-            getStartB = headB;
-            int i = 0;
-            while (temp != null) {
-                if (i == (sA - sB)) {
-                    getStartA = temp;
-                    break;
-                }
-                i++;
-                temp = temp.next;
+            for (int i = 0; i < diff; i++) {
+                getStartA = getStartA.next;
             }
         } else {
-            ListNode temp = headB;
-            int i = 0;
-            getStartA = headA;
-            while (temp != null) {
-                if (i == (sB - sA)) {
-                    getStartB = temp;
-                    break;
-                }
-                i++;
-                temp = temp.next;
+            for (int i = 0; i < diff; i++) {
+                getStartB = getStartB.next;
             }
         }
 
