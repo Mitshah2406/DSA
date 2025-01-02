@@ -14,31 +14,18 @@
  * }
  */
 class Solution {
-    public List<Integer> preorderTraversal(TreeNode root) {
-        //Morris Preorder
-        TreeNode curr = root;
-        List<Integer> arr = new ArrayList();
-        while(curr!=null){
-            if(curr.left==null){
-                arr.add(curr.val);
-                curr = curr.right;
-            }else{
-                TreeNode currp1 = curr.left;
-
-                while(currp1.right!=null && currp1.right!=curr){
-                    currp1 = currp1.right;
-                }
-
-                if(currp1.right==null){
-                    currp1.right = curr;
-                    arr.add(curr.val);
-                    curr = curr.left;
-                }else if(currp1.right==curr){
-                    currp1.right = null;
-                    curr = curr.right;
-                }
-            }
+    public void preorder(List<Integer> arr, TreeNode root){
+        if(root==null){
+            return;
         }
+        arr.add(root.val);
+        preorder(arr, root.left);
+        preorder(arr, root.right);
+    }
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> arr = new ArrayList();
+
+        preorder(arr, root);
         return arr;
     }
 }
