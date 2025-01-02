@@ -22,12 +22,12 @@ class Solution {
         Queue<Node> q = new LinkedList();
         
         q.add(root);
-        
         while(q.size()!=0){
             int n = q.size();
             
             for(int i=0;i<n;i++){
                 Node rem = q.poll();
+        // only add the first element of each level
                 if(i==0){
                     res.add(rem.data);
                 }
