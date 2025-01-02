@@ -1,27 +1,35 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- * int val;
- * TreeNode left;
- * TreeNode right;
- * TreeNode() {}
- * TreeNode(int val) { this.val = val; }
- * TreeNode(int val, TreeNode left, TreeNode right) {
- * this.val = val;
- * this.left = left;
- * this.right = right;
- * }
- * }
- */
-class Solution {
-    // private void inorder(TreeNode root, ArrayList<Integer> nodes){
-    // if(root==null){
-    // return;
-    // }
+// /**
+// *Definition for a binary tree node.*
+// public class TreeNode {
+//     *
+//     int val;*
+//     TreeNode left;*
+//     TreeNode right;*
 
-    // inorder(root.left, nodes);
-    // nodes.add(root.val);
-    // inorder(root.right, nodes);
+//     TreeNode() {
+//     }*
+
+//     TreeNode(int val) {
+//         this.val = val;
+//     }*
+
+//    TreeNode(int val, TreeNode left, TreeNode right) {
+//  * this.val = val;
+//  * this.left = left;
+//  * this.right = right;
+//  * }*
+// }*/
+
+class Solution {
+    // private void preorder(TreeNode root, ArrayList<Integer> nodes) {
+    //     if (root == null) {
+    //         nodes.add(Integer.MIN_VALUE);
+    //         return;
+    //     }
+
+    //     nodes.add(root.val);
+    //     preorder(root.left, nodes);
+    //     preorder(root.right, nodes);
     // }
 
     private boolean isSame(TreeNode p, TreeNode q) {
@@ -46,26 +54,13 @@ class Solution {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         // Brute Force (doesnt work if count of nodes is same and also if all nodes have
         // same value)
-
+        // if u add some special values for nulls then it can work
         // ArrayList<Integer> pNodes = new ArrayList();
         // ArrayList<Integer> qNodes = new ArrayList();
-        // inorder(p, pNodes);
-        // inorder(q, qNodes);
+        // preorder(p, pNodes);
+        // preorder(q, qNodes);
 
-        // int pN = pNodes.size();
-        // int qN = qNodes.size();
-
-        // if(pN!=qN){
-        // return false;
-        // }else{
-        // for(int i=0;i<pN;i++){
-        // if(pNodes.get(i)!=qNodes.get(i)){
-        // return false;
-        // }
-        // }
-        // }
-
-        // return true;
+        // return pNodes.equals(qNodes);
 
         // Other Approach
 
