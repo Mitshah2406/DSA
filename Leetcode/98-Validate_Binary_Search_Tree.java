@@ -14,42 +14,66 @@
  * }
  */
 class Solution {
-    public static int max = 0;
-    public static boolean valid = true;
+    // 1. Both approaches are close to optimal
+    // 1st approach is like compare left subtree ka max should be smaller than root
+    // and right subtree ka min should be greater than root
 
-    public static void inorder(TreeNode root, ArrayList<Integer> arr) {
+    // tc - O(n), sc- O(h)
+    // static boolean valid = true;
+
+    // public int[] valid(TreeNode root) {
+    //     int min = root.val;
+    //     int max = root.val;
+
+    //     if (valid && root.left != null) {
+    //         int[] l = valid(root.left);
+    //         min = Math.min(min, l[0]);
+    //         if (!(l[1] < root.val)) {
+    //             valid = false;
+    //         }
+    //     }
+    //     if (valid && root.right != null) {
+    //         int[] r = valid(root.right);
+    //         max = Math.max(max, r[1]);
+    //         if (!(r[0] > root.val)) {
+    //             valid = false;
+    //         }
+    //     }
+
+    //     return new int[] { min, max };
+    // }
+
+    // public boolean isValidBST(TreeNode root) {
+    //     valid = true;
+    //     int arr[] = valid(root);
+    //     return valid;
+    // }
+
+    // 2. more optimal
+    // tc - o(n), sc - O(h)
+
+    public boolean valid(TreeNode root, long min, long max) {
         if (root == null)
-            return;
-
-        inorder(root.left, arr);
-        if (arr.size() <1) {
-            max = root.val;
-            arr.add(root.val);
-        } else {
-            if (max >= root.val) {
-                valid = false;
-                return;
-            } else {
-                max = root.val;
-                arr.add(root.val);
-            }
+            return true;
+        long val = root.val;
+        if (val > max || val < min) {
+            return false;
         }
-        inorder(root.right, arr);
 
+        boolean l = valid(root.left, min, val - 1);
+        boolean r = valid(root.right, val + 1, max);
+
+        if (l == false || r == false) {
+            return false;
+        }
+
+        return true;
     }
 
     public boolean isValidBST(TreeNode root) {
-        valid = true;
-        max = 0;
-        ArrayList<Integer> arr = new ArrayList<>();
-        inorder(root, arr);
-        // for (int i = 0; i < arr.size() - 1; i++) {
-        //     if (arr.get(i) >= arr.get(i + 1)) {
-        //         valid = false;
-        //         break;
-        //     }
-        // }
+        long min = Long.MIN_VALUE;
+        long max = Long.MAX_VALUE;
 
-        return valid;
+        return valid(root, min, max);
     }
 }
