@@ -55,9 +55,9 @@ public class Codec {
             }
         }
         // st is root as it is preorder
-        TreeNode root = new TreeNode(Integer.parseInt(arr[st++]));
+        TreeNode root = new TreeNode(Integer.parseInt(arr[st]));
         // values before right part idx are on left
-        root.left = build(arr,st,idx-1);
+        root.left = build(arr,st+1,idx-1);
         // values from idx to end are right
         root.right = build(arr,idx,end);
         return root;
