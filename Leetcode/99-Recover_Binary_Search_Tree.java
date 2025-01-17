@@ -14,30 +14,37 @@
  * }
  */
 class Solution {
-    
-    TreeNode f,s,p;
-    public void inorder(TreeNode root) {
-        if (root == null) {
-            return;
+    TreeNode idx1;
+    TreeNode idx2;
+    TreeNode prev;
+
+    public void solve(TreeNode root){
+        if(root == null) return;
+
+        solve(root.left);
+
+        // Here, prev acts as a (i) and cur act as (i+1)
+        if(prev != null && root.val < prev.val && idx1 == null){
+            idx1 = prev;
+            idx2 = root; 
+        }else if(prev != null && root.val < prev.val && idx1 != null){
+            idx2 = root; 
         }
 
-        inorder(root.left);
-        if(p!=null && p.val>root.val && f==null){
-            f = p;
-            s = root;
-        }else if(p!=null && p.val>root.val && f!=null){
-            s= root;
-        }
-        p = root;
-        inorder(root.right);
+        // We are not moving root as it is done by recurion
+        prev = root;
+        solve(root.right);
     }
 
     public void recoverTree(TreeNode root) {
-        f= null;s=null; p=null;
-        inorder(root);
+        prev = null;
+        idx1 = null;
+        idx2 = null;
 
-        int t = f.val;
-        f.val = s.val;
-        s.val = t;
+        solve(root);
+
+        int tmp = idx1.val;
+        idx1.val = idx2.val;
+        idx2.val = tmp;
     }
 }
