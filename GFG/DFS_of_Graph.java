@@ -1,29 +1,24 @@
 class Solution {
-    public void dfs(ArrayList<ArrayList<Integer>> adj, boolean vis[], int src, ArrayList<Integer> ans){
+    // single source dfs
+    // Time Complexity: O(V+E)
+    // Space Complexity: O(V)
+    public static void dfs(ArrayList<Integer> arr, ArrayList<ArrayList<Integer>> adj,boolean vis[], int src){
+        vis[src] = true;
+        arr.add(src);
         ArrayList<Integer> nbrs = adj.get(src);
         
-        for(int i=0;i<nbrs.size();i++){
-            int v = nbrs.get(i);
-            
-            if(!vis[v]){
-                vis[v] = true;
-                ans.add(v);
-                dfs(adj, vis, v, ans);
+        for(int nbr : nbrs){
+            if(!vis[nbr]){
+                dfs(arr, adj, vis, nbr);
             }
         }
     }
     // Function to return a list containing the DFS traversal of the graph.
-    public ArrayList<Integer> dfsOfGraph(int V, ArrayList<ArrayList<Integer>> adj) {
-       boolean vis[] = new boolean[V];
-       ArrayList<Integer> ans = new ArrayList();
-       
-       for(int i=0;i<V;i++){
-           if(!vis[i]){
-               vis[i] = true;
-               ans.add(i);
-               dfs(adj, vis, i, ans);
-           }
-       }
-       return ans;
+    public ArrayList<Integer> dfsOfGraph(ArrayList<ArrayList<Integer>> adj) {
+        ArrayList<Integer> arr = new ArrayList();
+        int V = adj.size();
+        boolean vis[] = new boolean[V];
+        dfs(arr, adj, vis, 0);
+        return arr;
     }
 }
