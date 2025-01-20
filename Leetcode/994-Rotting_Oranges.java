@@ -1,110 +1,67 @@
-
-// Medium
-// You are given an m x n grid where each cell can have one of three values:
-
-// 0 representing an empty cell,
-// 1 representing a fresh orange, or
-// 2 representing a rotten orange.
-// Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
-
-// Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
-
- 
-
-// Example 1:
-
-
-// Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
-// Output: 4
-// Example 2:
-
-// Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
-// Output: -1
-// Explanation: The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
-// Example 3:
-
-// Input: grid = [[0,2]]
-// Output: 0
-// Explanation: Since there are already no fresh oranges at minute 0, the answer is just 0.
- 
-
-// Constraints:
-
-// m == grid.length
-// n == grid[i].length
-// 1 <= m, n <= 10
-// grid[i][j] is 0, 1, or 2.
-
-
-//Link --> https://leetcode.com/problems/rotting-oranges/
-
-class Pair{
-    int i;int j; int t;
-    public Pair(int i, int j, int t){
-        this.i=i;
-        this.j=j;
-        this.t=t;
-    }
-}
-
 class Solution {
-    public int orangesRotting(int[][] mat) {
-        Queue<Pair> q = new LinkedList<>();
-        int m = mat.length;
-        int n = mat[0].length;
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(mat[i][j]==2){
-                    Pair p = new Pair(i,j,0);
-                    q.add(p);
+    /*
+     * Mutli Source BFS is needed as we need to check from all rotten oranges in all
+     * 4 directions simultaneously how many time needed to rot
+     * 
+     * Time - O(n*m){Initial Src Finding} + O(m*n){BFS} = O(2(m*n)) ~ O(m*n)
+     * Space - O(m*n){Queue Space} + O(m*n) {Visited Arr space} = O(2(m*n)) ~ O(m*n)
+     */
+    class Pair {
+        int i;
+        int j;
+        int t;
+
+        public Pair(int i, int j, int t) {
+            this.i = i;
+            this.j = j;
+            this.t = t;
+        }
+    }
+
+    public boolean isInBounds(int i, int j, int n, int m) {
+        return (i >= 0 && j >= 0 && i < n && j < m);
+    }
+
+    public int orangesRotting(int[][] grid) {
+        Queue<Pair> q = new LinkedList();
+        int n = grid.length;
+        int m = grid[0].length;
+        boolean vis[][] = new boolean[n][m];
+        int dirs[][] = {
+                { 0, 1 }, { 1, 0 }, { 0, -1 }, { -1, 0 }
+        };
+        int fresh = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == 2) {
+                    q.add(new Pair(i, j, 0));
+                } else if (grid[i][j] == 1) {
+                    fresh++;
                 }
             }
         }
-        int minTime=0;
-        while(q.size()>0){
-            Pair rem = q.remove();
-
-            int crow = rem.i;
-            int ccol = rem.j;
-            int ctime = rem.t;
-            minTime=ctime;
-            // i-1,j
-            if(crow-1>=0 && mat[crow-1][ccol]==1){
-                Pair p = new Pair(crow-1, ccol, ctime+1);
-                q.add(p);
-                mat[crow-1][ccol] = 2;
-            }
-
-            // i, j-1
-             if(ccol-1>=0 && mat[crow][ccol-1]==1){
-                Pair p = new Pair(crow, ccol-1, ctime+1);
-                q.add(p);
-                mat[crow][ccol-1] = 2;
-            }
-            // i+1, j
-             if(crow+1<m && mat[crow+1][ccol]==1){
-                Pair p = new Pair(crow+1, ccol, ctime+1);
-                q.add(p);
-                mat[crow+1][ccol] = 2;
-            }
-            // i, j+1
-             if(ccol+1<n && mat[crow][ccol+1]==1){
-                Pair p = new Pair(crow, ccol+1, ctime+1);
-                q.add(p);
-                mat[crow][ccol+1] = 2;
-            }
-        }
-
-         for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(mat[i][j]==1){
-                    return -1;
+        int time = 0;
+        while (q.size() != 0) {
+            Pair rem = q.poll();
+            int r = rem.i;
+            int c = rem.j;
+            int t = rem.t;
+            time = t;
+            for (int i = 0; i < 4; i++) {
+                int nR = r + dirs[i][0];
+                int nC = c + dirs[i][1];
+                if (isInBounds(nR, nC, n, m) && grid[nR][nC] == 1 && !vis[nR][nC]) {
+                    vis[nR][nC] = true;
+                    grid[nR][nC] = 2;
+                    fresh--;
+                    q.add(new Pair(nR, nC, t + 1));
                 }
             }
         }
-        return minTime;
+        if (fresh != 0) {
+            return -1;
+        }
+        return time;
     }
 }
-
-// TC - O(n^2)
-// SC - O(n)
