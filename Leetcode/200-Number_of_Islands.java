@@ -3,24 +3,24 @@ class Solution {
         return (i >= 0 && j >= 0 && i < n && j < m);
     }
 
-    public void dfs(char grid[][], int i, int j, int n, int m, boolean vis[][], int dirs[][]) {
-        vis[i][j] = true;
-
+    public void dfs(char grid[][], int i, int j, int n, int m, int dirs[][]) {
+        grid[i][j] = '0';
+    
         for (int d = 0; d < 4; d++) {
             int nR = i + dirs[d][0];
             int nC = j + dirs[d][1];
 
-            if (isInBound(nR, nC, n, m) && grid[nR][nC] == '1' && !vis[nR][nC]) {
-                dfs(grid, nR, nC, n, m, vis, dirs);
+            if (isInBound(nR, nC, n, m) && grid[nR][nC] == '1') {
+                dfs(grid, nR, nC, n, m, dirs);
             }
         }
     }
-
+    // TC - O(n*m)
+    // SC - O(1)
     public int numIslands(char[][] grid) {
         int n = grid.length;
         int m = grid[0].length;
-        boolean vis[][] = new boolean[n][m];
-
+        // generally better to use a vis array although compromising space
         int ans = 0;
         int dirs[][] = {
                 { 1, 0 },
@@ -30,8 +30,8 @@ class Solution {
         };
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (grid[i][j] == '1' && !vis[i][j]) {
-                    dfs(grid, i, j, n, m, vis, dirs);
+                if (grid[i][j] == '1') {
+                    dfs(grid, i, j, n, m, dirs);
                     ans++;
                 }
             }
