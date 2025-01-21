@@ -1,4 +1,6 @@
 class Solution {
+    // TC - O(V+E) // once you traverse every vertex even if theres no edge
+    // SC - O(V) // for indegree arr/queue of vertices
     // Function to return list containing vertices in Topological order.
     static ArrayList<Integer> topologicalSort(ArrayList<ArrayList<Integer>> adj) {
         int V = adj.size();
