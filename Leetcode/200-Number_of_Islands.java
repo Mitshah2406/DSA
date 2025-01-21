@@ -1,36 +1,41 @@
 class Solution {
-    private boolean isInBounds(int newr, int newc, int n, int m){
-        return (newc >= 0 && newc < m && newr >= 0 && newr < n);
+    public boolean isInBound(int i, int j, int n, int m) {
+        return (i >= 0 && j >= 0 && i < n && j < m);
     }
-    private void dfs(char grid[][], int r, int c, int m, int n, boolean vis[][]) {
-        int dirs[][] = { { 0, 1 }, { 1, 0 }, { -1, 0 }, { 0, -1 } };
 
-        for (int i = 0; i < 4; i++) {
-            int newr = r - dirs[i][0];
-            int newc = c - dirs[i][1];
+    public void dfs(char grid[][], int i, int j, int n, int m, boolean vis[][], int dirs[][]) {
+        vis[i][j] = true;
 
-            if (isInBounds(newr, newc, n, m) && !vis[newr][newc] && grid[newr][newc]=='1') {
-                vis[newr][newc] = true;
-                dfs(grid, newr, newc, m, n, vis);
+        for (int d = 0; d < 4; d++) {
+            int nR = i + dirs[d][0];
+            int nC = j + dirs[d][1];
+
+            if (isInBound(nR, nC, n, m) && grid[nR][nC] == '1' && !vis[nR][nC]) {
+                dfs(grid, nR, nC, n, m, vis, dirs);
             }
         }
     }
 
     public int numIslands(char[][] grid) {
-        int m = grid[0].length;
         int n = grid.length;
+        int m = grid[0].length;
         boolean vis[][] = new boolean[n][m];
+
         int ans = 0;
+        int dirs[][] = {
+                { 1, 0 },
+                { 0, 1 },
+                { -1, 0 },
+                { 0, -1 }
+        };
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                if (!vis[i][j] && grid[i][j]=='1') {
-                    vis[i][j] = true;
-                    dfs(grid, i, j, m, n, vis);
+                if (grid[i][j] == '1' && !vis[i][j]) {
+                    dfs(grid, i, j, n, m, vis, dirs);
                     ans++;
                 }
             }
         }
-
         return ans;
     }
 }
