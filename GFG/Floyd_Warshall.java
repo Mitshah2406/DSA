@@ -1,6 +1,12 @@
 // User function template for JAVA
 
 class Solution {
+    /*
+    All Pairs Shortest Path
+    
+    Time - O(V^3)
+    Space - O(1)
+    */
     public void shortestDistance(int[][] mat) {
         int n = mat.length;
 
