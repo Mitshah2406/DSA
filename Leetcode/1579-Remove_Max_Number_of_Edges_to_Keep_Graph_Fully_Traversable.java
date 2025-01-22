@@ -1,94 +1,89 @@
-class DisjointSet {
-    public int parent[];
-    public int rank[];
-
-    public DisjointSet(int n) {
+class DisjointSet{
+    int parent[];
+    int rank[];
+    int n;
+    public DisjointSet(int n){
         parent = new int[n];
         rank = new int[n];
-        for (int i = 0; i < n; i++) {
+        for(int i=0;i<n;i++){
             parent[i] = i;
             rank[i] = 1;
         }
+        this.n=n;
     }
 
-    public int find(int x) {
-        if (parent[x] == x) {
-            return x;
-        }
-
-        int ans = find(parent[x]);
-        parent[x] = ans;
-        return ans;
-    }
-
-    public boolean unionByRank(int x, int y) {
+    public boolean union(int x, int y){
         int parX = find(x);
         int parY = find(y);
-        if (parX == parY) {
+
+        if(parX==parY){
             return false;
         }
-        if (rank[parX] > rank[parY]) {
+
+        if(rank[parX]>rank[parY]){
             parent[parY] = parX;
-        } else if (rank[parX] < rank[parY]) {
+        }else if(rank[parY]>rank[parX]){
             parent[parX] = parY;
-        } else {
-            parent[parY] = parX;
-            rank[parX]++;
+        }else{
+            parent[parX] = parY;
+            rank[parY]++;
         }
         return true;
     }
-}
 
+    public int find(int x){
+        if(parent[x]==x){
+            return x;
+        }
+        int t = find(parent[x]);
+        parent[x] = t;
+        return t;
+    }
+
+    public int countComponents(){
+        int res = 0;
+        for(int i=1;i<parent.length;i++){
+            if(parent[i]==i){
+                res++;
+            }
+        }
+        return res;
+    }
+}
 class Solution {
     public int maxNumEdgesToRemove(int n, int[][] edges) {
-        DisjointSet alice = new DisjointSet(n+1);
-        DisjointSet bob = new DisjointSet(n+1);
-        // A --> Alice, B --> Bob
-        Arrays.sort(edges, (a,b) -> b[0]-a[0]);
-        int edgeRemoveCount = 0;
-        int nodesConsideredA = 1;
-        int nodesConsideredB = 1;
-        for(int edge[]: edges){
-            int type = edge[0];
-            int u = edge[1];
-            int v = edge[2];
+        DisjointSet alice = new DisjointSet(n+1); // DSU for alice
+        DisjointSet bob = new DisjointSet(n+1); // DSU for bob
+        int remEdges = 0;
+        Arrays.sort(edges, (a,b)-> Integer.compare(b[0],a[0]));
+        for(int i=0;i<edges.length;i++){
+            int type = edges[i][0];
+            int u = edges[i][1];
+            int v = edges[i][2];
 
             if(type==3){
-                boolean mergeA = alice.unionByRank(u,v); // for alice
-                boolean mergeB = bob.unionByRank(u,v); // for bob
+                boolean rem1 = alice.union(u,v);
+                boolean rem2 = bob.union(u,v);
 
-                if(!mergeA && !mergeB){
-                    edgeRemoveCount++;
-                }
-                if(mergeA){
-                    nodesConsideredA++;
-                }
-                if(mergeB){
-                    nodesConsideredB++;
+
+                if(rem1==false && rem2==false){
+                    remEdges++;
                 }
             }else if(type==2){
-                // Bob
-                boolean mergeB = bob.unionByRank(u,v); // for bob
-
-                if(!mergeB){
-                   edgeRemoveCount++;
-                }else{
-                    nodesConsideredB++;
+                boolean rem = bob.union(u,v);
+                if(rem==false){
+                    remEdges++;
                 }
             }else{
-                // Alice
-                boolean mergeA = alice.unionByRank(u,v); // for alice
-
-                if(!mergeA){
-                    edgeRemoveCount++;
-                }else{
-                    nodesConsideredA++;
+                boolean rem = alice.union(u,v);
+                if(rem==false){
+                    remEdges++;
                 }
             }
         }
-        if(nodesConsideredA!=n || nodesConsideredB!=n){
+        if(alice.countComponents()!=1 || bob.countComponents()!=1){
             return -1;
         }
-        return edgeRemoveCount;
+        return remEdges;
     }
 }
