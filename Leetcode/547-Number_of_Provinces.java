@@ -1,29 +1,54 @@
-class Solution {
-    public void dfs(int arr[][], boolean vis[], int i, int n) {
-        vis[i] = true;
-
-        for (int k=0;k<n;k++) {
-            if(!vis[k] && arr[i][k]==1){
-                dfs(arr,vis,k,n);
+public class Solution {
+    class UnionFind {
+        private int count = 0;
+        private int[] parent, rank;
+        
+        public UnionFind(int n) {
+            count = n;
+            parent = new int[n];
+            rank = new int[n];
+            for (int i = 0; i < n; i++) {
+                parent[i] = i;
             }
+        }
+        
+        public int find(int p) {
+        	while (p != parent[p]) {
+                parent[p] = parent[parent[p]];    // path compression by halving
+                p = parent[p];
+            }
+            return p;
+        }
+        
+        public void union(int p, int q) {
+            int rootP = find(p);
+            int rootQ = find(q);
+            if (rootP == rootQ) return;
+            if (rank[rootQ] > rank[rootP]) {
+                parent[rootP] = rootQ;
+            }
+            else {
+                parent[rootQ] = rootP;
+                if (rank[rootP] == rank[rootQ]) {
+                    rank[rootP]++;
+                }
+            }
+            count--;
+        }
+        
+        public int count() {
+            return count;
         }
     }
-
-    public int findCircleNum(int[][] isConnected) {
-        // Not the most optimal but multi source DFS
-        // can also do with adj list construction
-
-        int n = isConnected.length;
-        boolean vis[] = new boolean[n];
-        int ans = 0;
-
-        for (int i = 0; i < n; i++) {
-            if (!vis[i]) {
-                dfs(isConnected, vis, i, n);
-                ans++;
+    
+    public int findCircleNum(int[][] M) {
+        int n = M.length;
+        UnionFind uf = new UnionFind(n);
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                if (M[i][j] == 1) uf.union(i, j);
             }
         }
-
-        return ans;
+        return uf.count();
     }
 }
