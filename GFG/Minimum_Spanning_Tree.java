@@ -68,46 +68,62 @@ class Edge implements Comparable<Edge>{
     }
 class Solution {
     
-    static int spanningTree(int V, int E, List<List<int[]>> adj) {
-       DisjointSet ds = new DisjointSet(V);
-       int ans = 0;
-       ArrayList<Edge> edges = new ArrayList();
-       for(int i=0;i<V;i++){
-           int u = i;
-           for(int[] vc : adj.get(i)){
-               int v = vc[0];
-               int wt = vc[1];
+    // static int spanningTree(int V, int E, List<List<int[]>> adj) {
+    //   DisjointSet ds = new DisjointSet(V);
+    //   int ans = 0;
+    //   ArrayList<Edge> edges = new ArrayList();
+    //   for(int i=0;i<V;i++){
+    //       int u = i;
+    //       for(int[] vc : adj.get(i)){
+    //           int v = vc[0];
+    //           int wt = vc[1];
                
-              edges.add(new Edge(u,v,wt));
+    //           edges.add(new Edge(u,v,wt));
+    //       }
+    //   }
+       
+    //   Collections.sort(edges);
+    //   int n = edges.size();
+    //   for(int i=0;i<n;i++){
+    //       Edge e = edges.get(i);
+    //       if(ds.union(e.u,e.v)){
+    //           ans+=e.w;
+    //       }
+    //   }
+    //   return ans;
+    // }
+    
+    
+    static int spanningTree(int V, int E, List<List<int[]>> adj) {
+       int ans = 0;
+       PriorityQueue<Edge> pq = new PriorityQueue<Edge>(); // just used one out u and v . ie u
+       pq.add(new Edge(0,0,0));
+       int dist[] = new int[V];
+       Arrays.fill(dist, Integer.MAX_VALUE);
+       while(pq.size()!=0){
+           Edge rem = pq.poll();
+           int u = rem.u;
+           int v = rem.v;
+           int wt = rem.w;
+           
+           if(dist[u]!=Integer.MAX_VALUE){
+               continue;
+           }
+           dist[u] = wt;
+           ans+=wt;
+           
+           for(int e[]: adj.get(u)){
+               int vtx = e[0];
+               int wt1 = e[1];
+               
+               if(dist[vtx]!=Integer.MAX_VALUE){
+                   continue;
+               }
+               pq.add(new Edge(vtx,vtx,wt1));
            }
        }
        
-       Collections.sort(edges);
-       int n = edges.size();
-       for(int i=0;i<n;i++){
-           Edge e = edges.get(i);
-           if(ds.union(e.u,e.v)){
-               ans+=e.w;
-           }
-       }
        return ans;
-    }
-    
-    
-    static int spanningTree(int V, int E, List<List<int[]>> adj) {
-       int ans = 0;
-       ArrayList<Edge> edges = new ArrayList();
-       for(int i=0;i<V;i++){
-           int u = i;
-           for(int[] vc : adj.get(i)){
-               int v = vc[0];
-               int wt = vc[1];
-               
-              edges.add(new Edge(u,v,wt));
-           }
-       }
-       
-       Collections.sort(edges);
        
     }
 }
