@@ -1,18 +1,20 @@
 class DisjointSet {
-    public int parent[];
-    public int rank[];
+    int parent[];
+    int rank[];
+    int size;
+    int indexing = 0;
 
     public DisjointSet(int n) {
         parent = new int[n];
         rank = new int[n];
-
+        this.size = n;
         for (int i = 0; i < n; i++) {
             parent[i] = i;
             rank[i] = 1;
         }
     }
 
-    public boolean unionByRank(int x, int y) {
+    public boolean union(int x, int y) {
         int parX = find(x);
         int parY = find(y);
 
@@ -24,39 +26,47 @@ class DisjointSet {
         } else if (rank[parY] > rank[parX]) {
             parent[parX] = parY;
         } else {
-            parent[parY] = parX;
-            rank[parX]++;
+            parent[parX] = parY;
+            rank[parY]++;
         }
-
         return true;
     }
 
     public int find(int x) {
-        if (parent[x] == x) {
+        if (parent[x] == x)
             return x;
-        }
-        int temp = find(parent[x]);
-        parent[x] = temp;
-        return temp;
+
+        int p = find(parent[x]);
+        parent[x] = p;
+        return p;
     }
 
+    public int countComponents() {
+        int st = indexing == 0 ? 0 : 1;
+        int cnt = 0;
+        for (int i = st; i < size; i++) {
+            if (parent[i] == i) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
 }
 
 class Solution {
     public int[] findRedundantConnection(int[][] edges) {
         int n = edges.length;
-        DisjointSet ds = new DisjointSet(n+1);
+        DisjointSet dsu = new DisjointSet(n+1);
+        dsu.indexing=1;
+        int res[] = new int[2];
+        for(int e[] : edges){
+            int u = e[0];
+            int v = e[1];
 
-        for(int edge[]: edges){
-            int u = edge[0];
-            int v = edge[1];
-
-            boolean merge = ds.unionByRank(u,v);
-            if(!merge){
-                return edge;
+            if(!dsu.union(u,v)){ // if the vertices are already in same component. i.e have same parent the edge will be rejected.. we have to return the last edge
+                res[0]=u;res[1]=v;
             }
         }
-
-        return new int[]{};
+        return res;
     }
 }
