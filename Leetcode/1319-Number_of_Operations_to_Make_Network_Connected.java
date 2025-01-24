@@ -47,6 +47,16 @@ class DisjointSet{
     }
 }
 class Solution {
+    /*
+    DSU Init - O(V) ~ O(n)
+    union O(alpha V)
+    find O(alpha V)
+    countComponents O(V)
+
+    Total - O(V) + O(V * alpha V) + O(V) ~ O(V*alpha V)
+    space = O(V)
+
+    */
     public int makeConnected(int n, int[][] connections) {
 
         DisjointSet dsu = new DisjointSet(n);
