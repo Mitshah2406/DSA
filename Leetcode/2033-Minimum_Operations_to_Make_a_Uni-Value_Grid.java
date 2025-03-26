@@ -1,34 +1,28 @@
 class Solution {
-    public int minOperations(int[][] grid, int x) {
-        int n = grid.length;
-        int m = grid[0].length;
-        int rem = grid[0][0] % x;
-        int arr[] = new int[n * m];
-        int k = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                arr[k++] = grid[i][j];
-                if (grid[i][j] % x != rem) {
-                    return -1;
-                }
+public:
+    int minOperations(vector<vector<int>>& grid, int x) {
+        vector<int> values;
+        for (const auto& row : grid) {
+            for (int val : row) {
+                values.push_back(val);
             }
         }
 
-        Arrays.sort(arr); // sorting bcoz in increasing order it is always beneficial to make every ele same as median ele
+        sort(values.begin(), values.end());
 
-        int mid = (int)Math.ceil((n * m) / 2);
-        int op = 0;
-            // System.out.println("mid"+arr[mid]);
-
-        for (int i = 0; i < arr.length; i++) {
-            if(arr[i]==arr[mid]) continue;
-            // System.out.println("adding"+arr[i]);
-            
-            int ans = Math.abs((arr[i] - arr[mid])) / x;
-            // System.out.println("adding ans"+ans);
-            op += ans;
+        for (int val : values) {
+            if (abs(val - values[0]) % x != 0) {
+                return -1;
+            }
         }
 
-        return op;
+        int median = values[values.size() / 2];
+        int operations = 0;
+
+        for (int val : values) {
+            operations += abs(val - median) / x;
+        }
+
+        return operations;
     }
-}
+};
