@@ -16,12 +16,7 @@ class Solution {
         int down = calc(grid, n, m, i + 1, j, dp);
         int right = calc(grid, n, m, i, j + 1, dp);
 
-        int ans = Math.min(down, right);
-
-        if (ans != Integer.MAX_VALUE) {
-            ans += grid[i][j];
-        }
-        return dp[i][j] = ans;
+        return dp[i][j] = grid[i][j] + Math.min(down, right);
     }
 
     public int minPathSum(int[][] grid) {
