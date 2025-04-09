@@ -1,27 +1,27 @@
 class Solution {
-    private static int dp[][];
-    private static int memo(int wt[], int profit[], int W, int i){
-        if(i==-1 || W==0){
+    public static int calc(int W,int n, int profit[], int wt[], int i, int currW, int dp[][]){
+        if(i==n || currW>=W){
             return 0;
         }
-        if(dp[i][W]!=-1){
-            return dp[i][W];
+        if(dp[i][currW]!=-1){
+            return dp[i][currW];
         }
-        int exc = memo(wt, profit, W, i-1);
-        int inc = 0;
-        if(W>=wt[i]){
-            inc = memo(wt, profit, W-wt[i], i-1) + profit[i];
+        int select = 0;
+        if(currW+wt[i]<=W){
+            select = profit[i] + calc(W,n,profit, wt, i+1, currW+wt[i], dp);
         }
+        int reject = calc(W,n,profit, wt, i+1, currW, dp);
         
-        return dp[i][W]=Math.max(exc,inc);
+        
+        return dp[i][currW] = Math.max(select, reject);
     }
-    // Function to return max value that can be put in knapsack of capacity W.
-    static int knapSack(int W, int wt[], int val[]) {
-        // your code here
-        dp = new int[wt.length][W+1];
-        for(int d[]: dp){
-            Arrays.fill(d,-1);
-        }
-        return memo(wt,val, W, wt.length-1);
+    static int knapsack(int W, int val[], int wt[]) {
+        // code here
+       int n = val.length;
+       int dp[][] = new int[n][W+1];
+       for(int d[]: dp){
+           Arrays.fill(d, -1);
+       }
+       return calc(W,n, val, wt, 0, 0, dp);
     }
 }
