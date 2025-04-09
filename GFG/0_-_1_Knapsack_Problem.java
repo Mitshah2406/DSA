@@ -1,4 +1,8 @@
 class Solution {
+    /*
+    TC => O(N*W) {Due to avoiding recomputation using memoization
+    SC => O(N*W) + O(N) {DP Arr Space + Auxillary Stack Space
+    */
     public static int calc(int W,int n, int profit[], int wt[], int i, int currW, int dp[][]){
         if(i==n || currW>=W){
             return 0;
