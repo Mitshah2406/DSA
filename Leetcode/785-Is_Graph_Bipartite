@@ -1,0 +1,76 @@
+class Solution {
+    private boolean bfs(int graph[][], int n) {
+        Queue<Integer> q = new LinkedList();
+        int vis[] = new int[n]; // -1, 0,1
+        Arrays.fill(vis, -1);
+        for (int src = 0; src < n; src++) {
+            if (vis[src] == -1) {
+                q.add(src);
+                vis[src] = 0;
+                boolean isZero = false;
+                while (!q.isEmpty()) {
+                    int rem = q.poll();
+                    for (int nbr : graph[rem]) {
+                        if (rem == nbr)
+                            continue;
+                        if (vis[nbr] == -1) {
+                            q.add(nbr);
+                            vis[nbr] = 1 - vis[rem];
+                        } else if (vis[rem] == vis[nbr]) {
+                            return false;
+                        }
+
+                    }
+                }
+            }
+        }
+        return true;
+
+    }
+
+    private boolean dfs(int graph[][], int n) {
+        int vis[] = new int[n];
+        Arrays.fill(vis, -1);
+
+        for (int i = 0; i < n; i++) {
+            if (vis[i] == -1) {
+                vis[i] = 0;
+                boolean ans = check(graph, n, vis, i);
+                if (!ans) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public boolean check(int graph[][], int n, int vis[], int src) {
+
+        for (int nbr : graph[src]) {
+            if (nbr == src)
+                continue;
+            if (vis[nbr] == -1) {
+                vis[nbr] = 1 - vis[src];
+                if (!check(graph, n, vis, nbr)) {
+                    return false;
+                }
+            } else if (vis[nbr] == vis[src]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        /*
+            Can be done using multi-src BFS/DFS
+                Time Complexity: O(n+e)
+                Space Complexity: O(n)
+            Same for both BFS and DFS.
+         */
+        // return bfs(graph, n);
+        return dfs(graph, n);
+    }
+}
