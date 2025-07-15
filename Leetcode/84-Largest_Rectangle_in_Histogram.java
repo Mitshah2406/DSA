@@ -68,30 +68,28 @@ class Solution {
         for (int i = 0; i < n; i++) {
 
             while (!st.isEmpty() && ht[i] < ht[st.peek()]) {
-                int tbs = st.pop();
-                int nsr = i;
-                int x1 = nsr - 1;
-                int nsl = 0;
-                
-                if (st.size() != 0) {
-                    nsl = st.peek();
-                }else{
-                    nsl = -1;
-                }
-                int x2 = nsl+1;
+                int toBeComputed = st.pop();
+                int nse = i; // next smaller 
+                int pse = 0; // previous small
 
-                int ans = ht[tbs] * (x1 - x2 + 1);
+                if (st.size() != 0) {
+                    pse = st.peek();
+                } else {
+                    pse = -1;
+                }
+
+                int ans = ht[toBeComputed] * (nse - pse - 1);
 
                 res = Math.max(res, ans);
             }
             st.push(i);
         }
 
-        while(!st.isEmpty()){
+        while (!st.isEmpty()) {
             int idx = st.pop();
-            int x1 = n-1;
-            int x2 = st.isEmpty() ?0:st.peek()+1;
-            res = Math.max(res,ht[idx]*(x1-x2+1));
+            int x1 = n;
+            int x2 = st.isEmpty() ? -1 : st.peek();
+            res = Math.max(res, ht[idx] * (x1 - x2 - 1));
         }
 
         return res;
