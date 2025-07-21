@@ -44,16 +44,58 @@ class Solution {
 
         //  example i1,j1 = (0,3); i2,j2 = (3,0) [Both took 3 steps]
         // therefore (i1+j1)=(i2+j2), so here we can dynamic calculate j2 = i1+j1-i2;
-        int dp[][][] = new int[n][n][n];
+        // int dp[][][] = new int[n][n][n];
+        // for (int d1[][] : dp) {
+        //     for (int d2[] : d1) {
+        //         Arrays.fill(d2, -1);
+        //     }
+        // }
+        // int ans = find(n - 1, n - 1, n - 1, n, grid, dp);
+        // if (ans < 0)
+        //     return 0;
+        // return ans;
+
+        // Tabulation 
+        int dp[][][] = new int[n + 1][n + 1][n + 1];
         for (int d1[][] : dp) {
             for (int d2[] : d1) {
-                Arrays.fill(d2, -1);
+                Arrays.fill(d2, (int) -1e9);
             }
         }
-        int ans = find(n - 1, n - 1, n - 1, n, grid, dp);
-        if (ans < 0)
-            return 0;
-        return ans;
+        dp[0][0][0] = grid[0][0];
 
+        for (int i1 = 0; i1 < n; i1++) {
+            for (int j1 = 0; j1 < n; j1++) {
+                for (int i2 = 0; i2 < n; i2++) {
+                    int j2 = i1 + j1 - i2;
+                    if (j2 < 0 || j2 >= n)
+                        continue;
+                    if (grid[i1][j1] == -1 || grid[i2][j2] == -1)
+                        continue;
+                    int best = -1_000_000_000;
+
+                    if (i1 > 0 && i2 > 0)
+                        best = Math.max(best, dp[i1 - 1][j1][i2 - 1]); // DD
+                    if (i1 > 0)
+                        best = Math.max(best, dp[i1 - 1][j1][i2]); // DR
+                    if (j1 > 0 && i2 > 0)
+                        best = Math.max(best, dp[i1][j1 - 1][i2 - 1]); // RD
+                    if (j1 > 0)
+                        best = Math.max(best, dp[i1][j1 - 1][i2]); // RR
+
+                    if (best == -1_000_000_000)
+                        continue; // no valid previous path
+
+                    int add = (i1 == i2 && j1 == j2) ? grid[i1][j1] : grid[i1][j1] + grid[i2][j2];
+                    dp[i1][j1][i2] = best + add;
+
+                }
+            }
+        }
+
+        int ans = dp[n - 1][n - 1][n - 1];
+        return ans < 0 ? 0 : ans;
+
+       
     }
 }
