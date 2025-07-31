@@ -1,4 +1,7 @@
 class Solution {
+    /*
+    Time = O(N), Space = O(1)
+     */
     public int checkBit(int n, int k){
         if((n&(1<<k))==0){
             return 0;
