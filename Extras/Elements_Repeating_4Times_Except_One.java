@@ -2,34 +2,31 @@ import java.io.*;
 import java.util.*;
 
 public class Solution {
-    private static boolean checkBit(int n, int k){
+    public static int checkBit(int n, int k){
         if((n&(1<<k))==0){
-            return false;
+            return 0;
         }
-        return true;
+        return 1;
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        
         int n = sc.nextInt();
-        
-        int arr[] = new int[n];
+        int nums[] = new int[n];
         for(int i=0;i<n;i++){
-            arr[i] = sc.nextInt();
+            nums[i] = sc.nextInt();
         }
-        int ans = 0;
-        for(int k=0;k<=31;k++){
-            int bitCount = 0;
+        int sum = 0;
+        int res = 0;
+        for(int j=0;j<32;j++){
+            sum = 0;
             for(int i=0;i<n;i++){
-                if(checkBit(arr[i],k)){
-                    bitCount++;
-                }
+                sum += checkBit(nums[i],j);
             }
-            
-            if(bitCount%3!=0){
-                ans = ans | (1<<k);
+            if(sum%4!=0){
+                res+=1<<j;
             }
         }
-        
-        System.out.println(ans);
+        System.out.println(res);
     }
 }
