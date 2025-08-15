@@ -19,10 +19,10 @@ class Solution {
     public List<Integer> addToArrayForm(int[] num, int k) {
         int n = num.length;
         ArrayList<Integer> arr = new ArrayList<>();
-        for(int i=0;i<n;i++){
+        for(int i=n-1;i>=0;i--){
             arr.add(num[i]);
         }
-        Collections.reverse(arr);
+        // Collections.reverse(arr);
         int i = 0;
         while(k!=0){
             int digit = k % 10;
