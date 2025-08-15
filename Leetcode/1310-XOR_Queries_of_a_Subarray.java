@@ -1,30 +1,32 @@
 class Solution {
     public int[] xorQueries(int[] arr, int[][] queries) {
+        /**
+        Brute Force (Can be done using O(n^2))
+        Optimal - O(n), O(n)
+
+        Intuition - Precalculate a prefix xor
+
+        for each query, just use the prefix sum for a range logic, instead of minus for discarding the part, do xor, as same same elements evaluates to zero only !!
+         */
         int n = arr.length;
-        int prefixXor[] = new int[n];
-        prefixXor[0] = arr[0];
-        for (int i = 1; i < n; i++) {
-            prefixXor[i] = prefixXor[i - 1] ^ arr[i];
+        int prefix[] = new int[n];
+
+        prefix[0] = arr[0];
+
+        for(int i=1;i<n;i++){
+            prefix[i] = prefix[i-1]^arr[i];
         }
-
         int ans[] = new int[queries.length];
-        int j = 0;
-        for (int q[] : queries) {
-            int u = q[0];
-            int v = q[1];
+        int i=0;
+        for(int q[]: queries){
+            int st = q[0];
+            int end = q[1];
 
-            // if(u==v){
-            // ans[j] = arr[u];
-            // }else{
-            if (u == 0) {
-                ans[j] = prefixXor[v];
-            } else {
-                int res = prefixXor[v] ^ prefixXor[u - 1];
-                ans[j] = res;
+            if(st==0){
+                ans[i++] = prefix[end];
+            }else{
+                ans[i++] = prefix[end] ^ prefix[st-1];
             }
-            // }
-
-            j++;
         }
 
         return ans;
