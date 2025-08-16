@@ -1,15 +1,21 @@
 class Solution {
     public boolean isPalindrome(int x) {
-        if(x<0) return false;
+        /**
+        Just reverse the number and compare
+        Time = O(log10 of x)
+        Space = O(1)
+         */
+        if (x < 0)
+            return false;
 
         int rev = 0;
-        int og =x;
-        while(x!=0){
-            int d = x%10;
-            x=x/10;
-            rev = (rev*10)+d;
+        int og = x;
+        while (x != 0) {
+            int d = x % 10;
+            x = x / 10;
+            rev = (rev * 10) + d;
         }
 
-        return rev==og;
+        return rev == og;
     }
 }
