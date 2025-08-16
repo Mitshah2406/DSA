@@ -13,6 +13,23 @@ class Solution {
         
         /*
         OPTIMAL
+        i * j  = N(36) // Printing all factors
+        1 * 36 = 36
+        2 * 18 = 36
+        3 * 12 = 36
+        4 * 9  = 36
+        6 * 6  = 36
+        ------------
+        9 * 4  = 36
+        12 * 3 = 36
+        18 * 2 = 36
+        36 * 1 = 36
+        
+        the line drawn, we need to go till there only which i=6 that is root of 36
+        because whenever a number is factor of N, the other multiplier is also a factor, so we add both
+        
+        i*j = N; 
+        i = 1, N= 36; j = N/i == ADD both i and N/i
         Time = O(root(n)) + O(no of factors * log * no of factors) + O(no of factors)
         Space = O(no of factors)
         basic divisor check and printing
