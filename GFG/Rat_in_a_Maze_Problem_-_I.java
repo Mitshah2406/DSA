@@ -1,62 +1,52 @@
+import java.util.*;
 class Solution {
-    public void ratInMaze(int mat[][], int n, int i, int j, StringBuilder path, ArrayList<String> ans){
-        // Base case: out of bounds or blocked cell or already visited cell
-        if (i < 0 || j < 0 || i >= n || j >= n || mat[i][j] == 0 || mat[i][j] == 2) {
+    // Function to find all possible paths
+    private void find(int i, int j, StringBuilder sb, int n,int maze[][], ArrayList<String> ans){
+        if(i==n-1 && j==n-1){
+            ans.add(sb.toString());
             return;
         }
-        
-        // Reached the destination
-        if (i == n - 1 && j == n - 1) {
-            ans.add(path.toString());
-            return;
+        maze[i][j] = 0;
+        if(i+1<n && maze[i+1][j]==1){
+            sb.append("D");
+            find(i+1,j,sb,n,maze,ans);
+            sb.setLength(sb.length()-1);
         }
-        
-        // Mark as visited
-        mat[i][j] = 2;
-
-        // Move Down
-        if (i + 1 < n && mat[i + 1][j] == 1) {
-            path.append("D");
-            ratInMaze(mat, n, i + 1, j, path, ans);
-            path.setLength(path.length() - 1);
+        if(j+1<n && maze[i][j+1]==1){
+            sb.append("R");
+            find(i,j+1,sb,n,maze,ans);
+            sb.setLength(sb.length()-1);
         }
-
-        // Move Right
-        if (j + 1 < n && mat[i][j + 1] == 1) {
-            path.append("R");
-            ratInMaze(mat, n, i, j + 1, path, ans);
-            path.setLength(path.length() - 1);
+        if(i-1>=0 && maze[i-1][j]==1){
+            sb.append("U");
+            find(i-1,j,sb,n,maze,ans);
+            sb.setLength(sb.length()-1);
         }
-
-        // Move Up
-        if (i - 1 >= 0 && mat[i - 1][j] == 1) {
-            path.append("U");
-            ratInMaze(mat, n, i - 1, j, path, ans);
-            path.setLength(path.length() - 1);
+        if(j-1>=0 && maze[i][j-1]==1){
+            sb.append("L");
+            find(i,j-1,sb,n,maze,ans);
+            sb.setLength(sb.length()-1);
         }
-
-        // Move Left
-        if (j - 1 >= 0 && mat[i][j - 1] == 1) {
-            path.append("L");
-            ratInMaze(mat, n, i, j - 1, path, ans);
-            path.setLength(path.length() - 1);
-        }
-
-        // Unmark visited
-        mat[i][j] = 1;
+        maze[i][j]=1;
     }
-
-    public ArrayList<String> findPath(int[][] mat) {
-        int n = mat.length;
+    // Backtracking Approach
+    // TC: O(4 ^ (N*N)), SC: O(N^2)
+    public ArrayList<String> ratInMaze(int[][] maze) {
+        // code here
+        int n = maze.length;
+        int m = maze[0].length;
         ArrayList<String> ans = new ArrayList<>();
         
-        // Check if the start or destination is blocked
-        if (mat[0][0] == 0 || mat[n - 1][n - 1] == 0) {
-            return ans;
-        }
-
-        StringBuilder path = new StringBuilder();
-        ratInMaze(mat, n, 0, 0, path, ans);
+        find(0,0,new StringBuilder(),n, maze, ans);
+        
+        Collections.sort(ans);
         return ans;
     }
 }
+
+
+
+// Your Output:
+// DDRDRR DDRURR DRDDRR
+// Expected Output:
+// DDRDRR DRDDRR
