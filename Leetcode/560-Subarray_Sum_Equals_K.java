@@ -1,24 +1,33 @@
 class Solution {
-    private int[] prefixSum(int arr[], int n) {
-        int p[] = new int[n];
-        p[0] = arr[0];
-        for (int i = 1; i < n; i++) {
-            p[i] = p[i - 1] + arr[i];
-        }
-        return p;
-    }
+    /**
+    Brute - O(n^2) simple nested loop with O(1) space
+    
 
-    public int subarraySum(int[] arr, int k) {
-        HashMap<Integer, Integer> hm = new HashMap();
-        hm.put(0,1);
-        int n = arr.length;
-        int pSum[] = prefixSum(arr, n);
-        int validStPts = 0;
-        for (int e = 0; e < n; e++) {
-            int search = pSum[e] - k;
-            validStPts = validStPts + (hm.getOrDefault(search, 0));
-            hm.put(pSum[e], hm.getOrDefault(pSum[e], 0) + 1);
+    Optimal - O(N), O(N)
+
+    Using prefix sum - [1,2,3,-3,1,1,1,4,2,-3]
+
+    if sum of 0..j is n, and we are finding occurrences of k,
+    then n = k + (n-k) 
+    so look for occurrences of n-k in hm, and store the current n
+     */
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> hm = new HashMap<>(); // Prefix Sum x No Of Subarrays
+
+        hm.put(0,1); // default case 
+        int sum = 0;
+        int cnt = 0;
+        int n = nums.length;
+        for(int i=0;i<n;i++){
+            sum+=nums[i]; // n = k + (n-k) 
+
+            // find n-k in hm
+            cnt+=hm.getOrDefault(sum-k,0);
+
+            // put new n in hm
+            hm.put(sum,hm.getOrDefault(sum,0)+1);
         }
-        return validStPts;
+
+        return cnt;
     }
 }
