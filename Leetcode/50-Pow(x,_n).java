@@ -1,28 +1,23 @@
 class Solution {
-
     public double myPow(double x, int n) {
+        // odd power subtract one, and multiply num to ans
+        // even power 2^20 = (2^2)20/2 (cut 2 and 2 it is same number)
+        // = 4^10 (so N which was 20 , now N/2 = 10)
+        // and X = 2 is X*X;
         double ans = 1.0;
-        long m = n;
-        if (m < 0) {
-            // if power is negative, convert to +ve
-            m = -1 * m;
+        long N = n;
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
         }
-        // if power is odd, minus one power put 1 x in ans
-        // even , rewrite as (x^2)^(n/2) basically if both 2 cancels out, we get the same thing
-        // so we x^2 adn outside power reduces by /2 that is logn complexity
-        while (m > 0) {
-            if (m % 2 == 1) {
-                m -= 1;
-                ans *= x;
+        while (N > 0) {
+            if (N % 2 == 1) {
+                ans = ans * x;
+                N -= 1;
             } else {
-                m = m / 2;
+                N /= 2;
                 x = x * x;
             }
-        }
-
-        if (n < 0) {
-            // 5^-2 can be written as 1/5^2
-            return 1.0 / ans;
         }
         return ans;
     }
